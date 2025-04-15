@@ -1,0 +1,29 @@
+# Root ignores
+.DS_Store
+*.log
+.env
+.env.local
+
+# Ignore Python/Flask (MatchTA_Server)
+MatchTA_Server/__pycache__/
+MatchTA_Server/*.pyc
+MatchTA_Server/instance/
+MatchTA_Server/.env
+MatchTA_Server/venv/
+MatchTA_Server/.pytest_cache/
+MatchTA_Server/.mypy_cache/
+
+# Ignore Node/React (MatchTA_UI)
+MatchTA_UI/node_modules/
+MatchTA_UI/.env
+MatchTA_UI/.next/
+MatchTA_UI/.turbo/
+MatchTA_UI/build/
+MatchTA_UI/dist/
+MatchTA_UI/.parcel-cache/
+MatchTA_UI/.cache/
+MatchTA_UI/coverage/
+
+# VSCode or JetBrains project files (optional but common)
+.vscode/
+.idea/
