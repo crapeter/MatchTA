@@ -10,6 +10,9 @@ CORS(app)
 def upload():
 	try:
 		uploaded_files = request.files.getlist("file")
+		num_of_tas = int(request.form.get("numOfTas", 0))
+
+
 		if len(uploaded_files) != 3:
 			return jsonify({"error": "Exactly 3 files must be uploaded"}), 400
 

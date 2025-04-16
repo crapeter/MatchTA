@@ -10,13 +10,14 @@ This class is used to load the data from the excel files.
 This class is used to split the data into undergrad and grad courses. It also splits the students between masters and phd. The data is stored in pandas dataframes
 '''
 class Data:
-	def __init__(self, file1_path, file2_path, file3_path):
+	def __init__(self, file1_path, file2_path, file3_path, num_of_tas):
 		# Loads dictionaries from column_names.py to access column names via dot notation.
 		self.FILE1 = col.f1
 		self.FILE2_S1 = col.s1
 		self.FILE2_S2 = col.s2
 		self.FILE2_S3 = col.s3
 		self.FILE3 = col.f3
+		self.num_of_tas = num_of_tas
 
 		# f1_
 		self.general_info = pd.read_excel(file1_path).dropna(how="all")

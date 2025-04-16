@@ -136,75 +136,82 @@ class Assign:
 
 
 	def assign_ta_graders(self):
-		matching = nx.algorithms.matching.max_weight_matching(self.graph, maxcardinality=True)
-
 		assignments = []
-		for ta, course in matching:
-			if ta[0].isdigit():
-				ta, course = course, ta
+		ta_lab = set()
 
-			if ta in self.data.ta_grader_avail[col.s1_grader_name].values:
-				course_number, section_number = course.split('-')
-				
-				grad_course_info_df = self.data.grad_courses[
-					(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
-					(self.data.grad_courses[col.f3_section_number] == int(section_number))
-				]
-				undergrad_course_info_df = self.data.undergrad_courses[
-					(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
-					(self.data.undergrad_courses[col.f3_section_number] == int(section_number))
-				]
-
-				grad_course_info = None
-				undergrad_course_info = None
-
-				if not grad_course_info_df.empty:
-					grad_course_info = grad_course_info_df.iloc[0]
-				elif not undergrad_course_info_df.empty:
-					undergrad_course_info = undergrad_course_info_df.iloc[0]
-				else:
+		for _ in range(self.data.num_of_tas):
+			matching = nx.algorithms.matching.max_weight_matching(self.graph, maxcardinality=True)
+			for ta, course in matching:
+				if ta in ta_lab:
 					continue
 
-				course_info = grad_course_info if grad_course_info is not None else undergrad_course_info
+				if ta[0].isdigit():
+					ta, course = course, ta
 
-				assignments.append({
-					'Course Number': course,
-					'Section Number': course_info[col.f3_section_number],
-					'Instructor': course_info[col.f3_instructor],
-					'Assignment': ta,
-					'Course Title': course_info[col.f3_course_title],
-					'Days': course_info[col.f3_days],
-					'Times': course_info[col.f3_times],
-					'Building': course_info[col.f3_building],
-					'Room Number': course_info[col.f3_room_number]
-				})
+				if ta in self.data.ta_grader_avail[col.s1_grader_name].values:
+					course_number, section_number = course.split('-')
+					
+					grad_course_info_df = self.data.grad_courses[
+						(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
+						(self.data.grad_courses[col.f3_section_number] == int(section_number))
+					]
+					undergrad_course_info_df = self.data.undergrad_courses[
+						(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
+						(self.data.undergrad_courses[col.f3_section_number] == int(section_number))
+					]
 
-				# Lab section match — use whichever course info is available
-				instructor_raw = course_info[col.f3_instructor]
-				instructor_name = str(instructor_raw).strip().lower() if pd.notna(instructor_raw) else ""
+					grad_course_info = None
+					undergrad_course_info = None
 
+					if not grad_course_info_df.empty:
+						grad_course_info = grad_course_info_df.iloc[0]
+					elif not undergrad_course_info_df.empty:
+						undergrad_course_info = undergrad_course_info_df.iloc[0]
+					else:
+						continue
 
-				lab_df = (
-					self.data.grad_courses if grad_course_info is not None else self.data.undergrad_courses
-				)
+					course_info = grad_course_info if grad_course_info is not None else undergrad_course_info
 
-				lab_sections = lab_df[
-					(lab_df[col.f3_course_number] == int(course_number)) &
-					(lab_df[col.f3_section_number] > 500) &
-					(lab_df[col.f3_instructor].str.strip().str.lower() == instructor_name)
-				]
-
-				for _, lab in lab_sections.iterrows():
 					assignments.append({
-						'Course Number': f"{course_number}-{lab[col.f3_section_number]}",
-						'Section Number': lab[col.f3_section_number],
-						'Instructor': lab[col.f3_instructor],
+						'Course Number': course,
+						'Section Number': course_info[col.f3_section_number],
+						'Instructor': course_info[col.f3_instructor],
 						'Assignment': ta,
-						'Course Title': lab[col.f3_course_title],
-						'Days': lab[col.f3_days],
-						'Times': lab[col.f3_times],
-						'Building': lab[col.f3_building],
-						'Room Number': lab[col.f3_room_number]
+						'Course Title': course_info[col.f3_course_title],
+						'Days': course_info[col.f3_days],
+						'Times': course_info[col.f3_times],
+						'Building': course_info[col.f3_building],
+						'Room Number': course_info[col.f3_room_number]
 					})
+
+					# Lab section match — use whichever course info is available
+					instructor_raw = course_info[col.f3_instructor]
+					instructor_name = str(instructor_raw).strip().lower() if pd.notna(instructor_raw) else ""
+
+
+					lab_df = (
+						self.data.grad_courses if grad_course_info is not None else self.data.undergrad_courses
+					)
+
+					lab_sections = lab_df[
+						(lab_df[col.f3_course_number] == int(course_number)) &
+						(lab_df[col.f3_section_number] > 500) &
+						(lab_df[col.f3_instructor].str.strip().str.lower() == instructor_name)
+					]
+
+					for _, lab in lab_sections.iterrows():
+						assignments.append({
+							'Course Number': f"{course_number}-{lab[col.f3_section_number]}",
+							'Section Number': lab[col.f3_section_number],
+							'Instructor': lab[col.f3_instructor],
+							'Assignment': ta,
+							'Course Title': lab[col.f3_course_title],
+							'Days': lab[col.f3_days],
+							'Times': lab[col.f3_times],
+							'Building': lab[col.f3_building],
+							'Room Number': lab[col.f3_room_number]
+						})
+						ta_lab.add(ta)
+					self.graph.remove_edge(ta, course)
 
 		return pd.DataFrame(assignments)

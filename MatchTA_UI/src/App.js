@@ -14,6 +14,7 @@ function App() {
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
+  const [numOfTas, setNumOfTas] = useState("1");
   const [previewData, setPreviewData] = useState({
     file1: [],
     file2: [],
@@ -34,6 +35,7 @@ function App() {
     };
     reader.readAsArrayBuffer(file);
   };
+  const imageUrls = [RobotImage, RobotImage, RobotImage];
 
   // ----------------------------------------------------------------------------------------------
 
@@ -48,6 +50,7 @@ function App() {
     formData.append("file", files.file1);
     formData.append("file", files.file2);
     formData.append("file", files.file3);
+    formData.append("numOfTas", numOfTas);
 
     try {
       const response = await axios.post(
@@ -143,7 +146,7 @@ function App() {
           <p>
             For more help, you can watch this{" "}
             <a
-              href="https://www.youtube.com/"
+              href="https://www.youtube.com/watch?v=LsxgUPBntyk"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -184,6 +187,34 @@ function App() {
           <button className="view-info-btn" onClick={() => setShowModal3(true)}>
             View Document Info
           </button>
+        </div>
+
+        <div>
+          <h3>Number of TAs:</h3>
+          <div
+            style={{ display: "flex", alignItems: "flex-start", gap: "1rem" }}
+          >
+            <select
+              id="num-of-tas"
+              value={numOfTas}
+              onChange={(e) => setNumOfTas(e.target.value)}
+              style={{maxHeight: "50px", overflowY: "auto"}}
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+              {imageUrls.slice(0, numOfTas).map((url, index) => (
+                <img
+                  key={index}
+                  src={RobotImage}
+                  alt="Buddy"
+                  style={{ maxWidth: "50px", maxHeight: "50px" }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         <button className="submit-btn" onClick={handleSubmit}>
