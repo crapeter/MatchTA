@@ -50,7 +50,7 @@ function App() {
     formData.append("file", files.file1);
     formData.append("file", files.file2);
     formData.append("file", files.file3);
-    formData.append("numOfTas", numOfTas);
+    formData.append("num_of_tas", numOfTas);
 
     try {
       const response = await axios.post(

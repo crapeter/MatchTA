@@ -16,6 +16,7 @@ import pandas as pd
 import networkx as nx
 import column_names as col
 import re
+from openpyxl import Workbook
 
 '''
 This class will be where the sorting algorithms will be implemented, following the restraints at the top of this file.
@@ -136,10 +137,11 @@ class Assign:
 
 
 	def assign_ta_graders(self):
-		assignments = []
 		ta_lab = set()
+		dataframes = []
 
 		for _ in range(self.data.num_of_tas):
+			assignments = []
 			matching = nx.algorithms.matching.max_weight_matching(self.graph, maxcardinality=True)
 			for ta, course in matching:
 				if ta in ta_lab:
@@ -213,5 +215,7 @@ class Assign:
 						})
 						ta_lab.add(ta)
 					self.graph.remove_edge(ta, course)
+			dataframes.append(pd.DataFrame(assignments))
 
-		return pd.DataFrame(assignments)
+		print(len(dataframes))
+		return dataframes
