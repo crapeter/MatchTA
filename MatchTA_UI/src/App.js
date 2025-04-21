@@ -146,7 +146,7 @@ function App() {
           <p>
             For more help, you can watch this{" "}
             <a
-              href="https://www.youtube.com/watch?v=LsxgUPBntyk"
+              href="https://youtu.be/j9E6WPc8W4U"
               target="_blank"
               rel="noopener noreferrer"
             >
