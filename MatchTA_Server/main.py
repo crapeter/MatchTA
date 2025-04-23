@@ -3,6 +3,7 @@ from flask import Flask, request, send_file, jsonify, render_template
 from flask_cors import CORS
 from data import Data
 from assign import Assign
+from pprint import pprint
 
 app = Flask(__name__)
 CORS(app)
@@ -30,21 +31,8 @@ def upload():
 		assign.create_graph()
 		assignments = assign.assign_ta_graders()
 
-		course_priority = {
-			"1": "Primary",
-			"2": "Secondary",
-			"3": "Tertiary"
-		}
-
-		# for i in assignments:
-		# 	print(i.head(10))
-
 		output_path = "Capstone_Project.xlsx"
-		with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-			for i, df in enumerate(assignments, start=1):
-				sheet_name = course_priority.get(str(i), "Other")
-				df.to_excel(writer, sheet_name=sheet_name, index=False)
-
+		assignments.to_excel(output_path, index=False)
 
 		return send_file(
 			output_path,

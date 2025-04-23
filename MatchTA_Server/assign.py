@@ -1,22 +1,9 @@
-'''
-Basic rules:
-	1.  For graduate courses, it is strongly encouraged to select PhD students.
-	2.  Faculty may prefer their own PhD students or research students to be their TA/graders.
-	3.  Avoid the overlapping of your class time and students' class time.
-	4.  TA/grader can NOT be TA of their spring 2025 registered course.
-	5.  For a TA/grader, we prefer not to assign more than two courses.
-	6.  For one course, we prefer not to assign more than two TA/graders.
-
-Output:
-	1. Needs to be an excel file
-	2. The excel file should have the columns: Course Number, Section Number (1 or 2), Instructor, Assignment (TA/grader), Course Title, Days, Times, BUilding, Room Number
-'''
-
 import pandas as pd
 import networkx as nx
 import column_names as col
 import re
 from openpyxl import Workbook
+from pprint import pprint
 
 '''
 This class will be where the sorting algorithms will be implemented, following the restraints at the top of this file.
@@ -77,6 +64,9 @@ class Assign:
 				weight += 2
 			else:
 				weight -= 2  # Soft penalty for non-PhD
+		else:
+			if ta_name in self.data.masters_students[col.s1_grader_name].values:
+				weight += 4
 
 		# Rule 4: Faculty prefers their own students
 		if len(ta_advisor) > 0 and pd.notna(ta_advisor[0]):
@@ -102,7 +92,7 @@ class Assign:
 
 		# Always return True because someones got to do it
 		# They will only be assigned if they don't have a course that they fit best with
-		return True, weight
+		return True, weight if weight > 1 else 1
 
 	def create_graph(self):
 		# Add nodes for TAs/graders, bipartite=0
@@ -137,85 +127,137 @@ class Assign:
 
 
 	def assign_ta_graders(self):
-		ta_lab = set()
-		dataframes = []
+		assignments = []
+		ta_to_course_map = {}
+		ta_assignment_count = {}
+		reserved_tas = set()
 
-		for _ in range(self.data.num_of_tas):
-			assignments = []
-			matching = nx.algorithms.matching.max_weight_matching(self.graph, maxcardinality=True)
-			for ta, course in matching:
-				if ta in ta_lab:
-					continue
+		# Iterate through the courses in the graph
+		for course in self.graph.nodes():
+			# Skip non-course nodes (e.g., "Masters Thesis", "Individual Study", etc.)
+			if course not in self.graph or not str(course)[0].isdigit() or int(str(course).split('-')[0]) >= 6000 or int(str(course).split('-')[0]) == 4000:
+				continue
 
-				if ta[0].isdigit():
-					ta, course = course, ta
+			course_number, section_number = course.split('-')
+			section_number = int(section_number)
 
-				if ta in self.data.ta_grader_avail[col.s1_grader_name].values:
-					course_number, section_number = course.split('-')
-					
-					grad_course_info_df = self.data.grad_courses[
-						(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
-						(self.data.grad_courses[col.f3_section_number] == int(section_number))
-					]
-					undergrad_course_info_df = self.data.undergrad_courses[
-						(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
-						(self.data.undergrad_courses[col.f3_section_number] == int(section_number))
-					]
+			grad_course_info_df = self.data.grad_courses[
+				(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
+				(self.data.grad_courses[col.f3_section_number] == section_number)
+			]
+			undergrad_course_info_df = self.data.undergrad_courses[
+				(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
+				(self.data.undergrad_courses[col.f3_section_number] == section_number)
+			]
 
-					grad_course_info = None
-					undergrad_course_info = None
+			if not grad_course_info_df.empty:
+				course_info = grad_course_info_df.iloc[0]
+			elif not undergrad_course_info_df.empty:
+				course_info = undergrad_course_info_df.iloc[0]
 
-					if not grad_course_info_df.empty:
-						grad_course_info = grad_course_info_df.iloc[0]
-					elif not undergrad_course_info_df.empty:
-						undergrad_course_info = undergrad_course_info_df.iloc[0]
-					else:
-						continue
+			instructor = course_info[col.f3_instructor]
+			current_enrollment = course_info[col.f3_current_enrollment]
 
-					course_info = grad_course_info if grad_course_info is not None else undergrad_course_info
+			viable_tas = [
+				ta for ta in self.graph.neighbors(course)
+				if ta_assignment_count.get(ta, 0) < 4 and ta not in reserved_tas
+			]
+			if not viable_tas:
+				continue
 
-					assignments.append({
-						'Course Number': course,
-						'Section Number': course_info[col.f3_section_number],
-						'Instructor': course_info[col.f3_instructor],
-						'Assignment': ta,
-						'Course Title': course_info[col.f3_course_title],
-						'Days': course_info[col.f3_days],
-						'Times': course_info[col.f3_times],
-						'Building': course_info[col.f3_building],
-						'Room Number': course_info[col.f3_room_number]
-					})
+			# Sort TAs by weight
+			sorted_tas = sorted(
+				viable_tas,
+				key=lambda ta: (
+					self.graph.get_edge_data(course, ta, {}).get('weight', 0)
+					if self.graph.has_edge(course, ta)
+					else 0
+				),
+				reverse=True
+			)
 
-					# Lab section match — use whichever course info is available
-					instructor_raw = course_info[col.f3_instructor]
-					instructor_name = str(instructor_raw).strip().lower() if pd.notna(instructor_raw) else ""
+			has_lab = self._course_has_lab(course_number, section_number, instructor)
 
+			# Assign the TAs
+			if has_lab:
+				if sorted_tas:
+					selected_ta = sorted_tas[0]
+					ta_to_course_map[course] = [f"TA: {selected_ta}"]
+					ta_assignment_count[selected_ta] = ta_assignment_count.get(selected_ta, 0) + 5
+					reserved_tas.add(f"{selected_ta}: {instructor}, {course_number}")
+			elif section_number < 500:
+				if current_enrollment < 30 or section_number > 500:
+					max_tas = 1
+				elif current_enrollment < 70 or int(course_number) // 1000 == 5:
+					max_tas = 2
+				else:
+					max_tas = 3
 
-					lab_df = (
-						self.data.grad_courses if grad_course_info is not None else self.data.undergrad_courses
-					)
+				tas = []
+				while len(tas) < max_tas:
+					selected_ta = sorted_tas.pop(0)
+					if ta_assignment_count.get(selected_ta, 0) < 4 and selected_ta not in reserved_tas:
+						tas.append(selected_ta)
 
-					lab_sections = lab_df[
-						(lab_df[col.f3_course_number] == int(course_number)) &
-						(lab_df[col.f3_section_number] > 500) &
-						(lab_df[col.f3_instructor].str.strip().str.lower() == instructor_name)
-					]
+				ta_to_course_map[course] = [f"TA: {ta}" for ta in tas]
+				for ta in tas:
+					ta_assignment_count[ta] = ta_assignment_count.get(ta, 0) + 1
+			else:
+				for ta in reserved_tas:
+					if f"{instructor}, {course_number}" in ta:
+						ta_to_course_map[course] = [f"TA: {ta.split(': ')[0]}"]
+						break
 
-					for _, lab in lab_sections.iterrows():
-						assignments.append({
-							'Course Number': f"{course_number}-{lab[col.f3_section_number]}",
-							'Section Number': lab[col.f3_section_number],
-							'Instructor': lab[col.f3_instructor],
-							'Assignment': ta,
-							'Course Title': lab[col.f3_course_title],
-							'Days': lab[col.f3_days],
-							'Times': lab[col.f3_times],
-							'Building': lab[col.f3_building],
-							'Room Number': lab[col.f3_room_number]
-						})
-						ta_lab.add(ta)
-					self.graph.remove_edge(ta, course)
-			dataframes.append(pd.DataFrame(assignments))
+		# Create the final assignments DataFrame
+		for course_key in sorted(ta_to_course_map.keys(), key=lambda x: int(x.split('-')[0])):
+			ta_list = ta_to_course_map[course_key]
+			course_number, section_number = course_key.split('-')
+			section_number = int(section_number)
 
-		print(len(dataframes))
-		return dataframes
+			grad_course_info_df = self.data.grad_courses[
+				(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
+				(self.data.grad_courses[col.f3_section_number] == section_number)
+			]
+			undergrad_course_info_df = self.data.undergrad_courses[
+				(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
+				(self.data.undergrad_courses[col.f3_section_number] == section_number)
+			]
+
+			if not grad_course_info_df.empty:
+				course_info = grad_course_info_df.iloc[0]
+			elif not undergrad_course_info_df.empty:
+				course_info = undergrad_course_info_df.iloc[0]
+
+			assignments.append({
+				'Course Number': course_info[col.f3_course_number],
+				'Section Number': course_info[col.f3_section_number],
+				'Instructor': course_info[col.f3_instructor],
+				'Assignment': ', '.join(ta_list),
+				'Course Title': course_info[col.f3_course_title],
+				'Days': course_info[col.f3_days],
+				'Times': course_info[col.f3_times],
+				'Building': course_info[col.f3_building],
+				'Room Number': course_info[col.f3_room_number],
+			})
+
+		return pd.DataFrame(assignments)
+
+	def _course_has_lab(self, course_number, section_number, instructor):
+		# Check if the course is a lab course
+		if section_number > 500:
+			return False
+
+		# Check grad courses
+		lab_df = self.data.grad_courses[
+			(self.data.grad_courses[col.f3_course_number] == int(course_number)) &
+			(self.data.grad_courses[col.f3_instructor] == instructor) &
+			(self.data.grad_courses[col.f3_section_number] > 500)
+		]
+		# Check undergrad courses if no lab found in grad
+		if lab_df.empty:
+			lab_df = self.data.undergrad_courses[
+				(self.data.undergrad_courses[col.f3_course_number] == int(course_number)) &
+				(self.data.undergrad_courses[col.f3_instructor] == instructor) &
+				(self.data.undergrad_courses[col.f3_section_number] > 500)
+			]
+		return not lab_df.empty
