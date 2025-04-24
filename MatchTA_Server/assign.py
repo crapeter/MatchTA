@@ -10,7 +10,7 @@ This class will be where the sorting algorithms will be implemented, following t
 It will take in the data from the Data class and output the sorted data.
 The sorted data will be stored in a pandas dataframe.
 The sorted data will be stored in an excel file.
-The excel file will be named 'name_tbd.xlsx'.
+The excel file will be named 'Capstone_Project.xlsx'.
 '''
 class Assign:
 	# get hours: (course_num % 1000) // 100
@@ -124,7 +124,6 @@ class Assign:
 				viable, weight = self.is_viable(ta, course)
 				if viable:
 					self.graph.add_edge(ta[col.s1_grader_name], course_id, weight=weight)
-
 
 	def assign_ta_graders(self):
 		assignments = []
