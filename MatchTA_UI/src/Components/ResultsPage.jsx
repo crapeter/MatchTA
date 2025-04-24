@@ -4,6 +4,8 @@ import * as XLSX from "xlsx";
 import { TAResultsChart, TAPieChart } from "./TACharts";
 import GraphComponent from "./GraphComponent";
 
+import NavBar from "./NavBar";
+
 export default function ResultsPage() {
   const nav = useNavigate();
   const [barData, setBarData] = useState([]);
@@ -70,6 +72,7 @@ export default function ResultsPage() {
 
   return (
     <div className="results-page">
+      <NavBar />
       <h1>Results Overview</h1>
 
       <section>

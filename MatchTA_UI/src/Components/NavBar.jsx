@@ -1,4 +1,5 @@
 import React from "react";
+import { FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import "../CSS/NavBar.css";
@@ -10,6 +11,7 @@ const NavBar = () => {
     <div className="NavBar">
       <div className="nav-hover-area"></div>
       <nav>
+        <button onClick={() => navigate("/")}><FaHome /></button>
         <button onClick={() => navigate("/Upload/1")}>1</button>
         <button onClick={() => navigate("/Upload/2")}>2</button>
         <button onClick={() => navigate("/Upload/3")}>3</button>
