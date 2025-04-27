@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 import * as XLSX from "xlsx";
 
 export default function UploadPage() {
@@ -91,6 +92,7 @@ export default function UploadPage() {
 
   return (
     <div style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
+      <NavBar />
       <h2>Upload Sheet {sheetNumber}</h2>
 
       {step === "upload" && (

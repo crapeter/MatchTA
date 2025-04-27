@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import NavBar from "./NavBar";
 
 export default function FinalSchedule() {
   const [finalRows, setFinalRows] = useState([]);
@@ -42,13 +43,26 @@ export default function FinalSchedule() {
 
   return (
     <div style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
+      <NavBar />
       <h1>Final Schedule</h1>
-      <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "1.5rem" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          marginBottom: "1.5rem",
+        }}
+      >
         <thead>
           <tr style={{ backgroundColor: "#f0f0f0" }}>
-            <th style={{ padding: "10px", border: "1px solid #ccc" }}>Course</th>
-            <th style={{ padding: "10px", border: "1px solid #ccc" }}>Instructor</th>
-            <th style={{ padding: "10px", border: "1px solid #ccc" }}>Assignment</th>
+            <th style={{ padding: "10px", border: "1px solid #ccc" }}>
+              Course
+            </th>
+            <th style={{ padding: "10px", border: "1px solid #ccc" }}>
+              Instructor
+            </th>
+            <th style={{ padding: "10px", border: "1px solid #ccc" }}>
+              Assignment
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -57,8 +71,12 @@ export default function FinalSchedule() {
               <td style={{ padding: "10px", border: "1px solid #ccc" }}>
                 {row["Course Number"]}-{row["Section Number"]}
               </td>
-              <td style={{ padding: "10px", border: "1px solid #ccc" }}>{row["Instructor"]}</td>
-              <td style={{ padding: "10px", border: "1px solid #ccc" }}>{row["Assignment"]}</td>
+              <td style={{ padding: "10px", border: "1px solid #ccc" }}>
+                {row["Instructor"]}
+              </td>
+              <td style={{ padding: "10px", border: "1px solid #ccc" }}>
+                {row["Assignment"]}
+              </td>
             </tr>
           ))}
         </tbody>

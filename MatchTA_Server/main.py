@@ -44,6 +44,7 @@ def upload():
 	except Exception as e:
 		print("Error during upload:", e)
 		return jsonify({"error": str(e)}), 500
+
 @app.route("/graph-data", methods=["GET"])
 def get_graph_data():
     data = Data("temp_file1.xlsx", "temp_file2.xlsx", "temp_file3.xlsx", num_of_tas=50)  # or however you set it

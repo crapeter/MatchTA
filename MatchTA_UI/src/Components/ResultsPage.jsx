@@ -1,34 +1,27 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import GraphComponent from "./GraphComponent";
+import NavBar from "./NavBar";
+import "../CSS/ResultsPage.css";
 
 export default function ResultsPage() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
-      <h1>Results Page</h1>
+    <div className="results-container">
+      <NavBar />
+      <h1 className="results-title">Results Page</h1>
 
-      <GraphComponent />
+      <div className="graph-section">
+        <GraphComponent />
+      </div>
 
       <button
         onClick={() => navigate("/FinalSchedule")}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginTop: "1rem",
-          position: "relative", // 
-          zIndex: 1,
-        }}
+        className="schedule-button"
       >
         See Final Schedule
-</button>
-
+      </button>
     </div>
   );
 }

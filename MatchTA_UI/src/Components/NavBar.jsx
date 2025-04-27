@@ -10,6 +10,7 @@ const NavBar = () => {
     <div className="NavBar">
       <div className="nav-hover-area"></div>
       <nav>
+        <button onClick={() => navigate("/")}>🏠</button>
         <button onClick={() => navigate("/Upload/1")}>1</button>
         <button onClick={() => navigate("/Upload/2")}>2</button>
         <button onClick={() => navigate("/Upload/3")}>3</button>
