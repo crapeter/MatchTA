@@ -4,7 +4,7 @@ from flask_cors import CORS
 from data import Data
 from assign import Assign
 from pprint import pprint
-
+from flask import jsonify
 app = Flask(__name__)
 CORS(app)
 
@@ -44,6 +44,18 @@ def upload():
 	except Exception as e:
 		print("Error during upload:", e)
 		return jsonify({"error": str(e)}), 500
+@app.route("/graph-data", methods=["GET"])
+def get_graph_data():
+    data = Data("temp_file1.xlsx", "temp_file2.xlsx", "temp_file3.xlsx", num_of_tas=50)  # or however you set it
+    assign = Assign(data)
+    assign.create_graph()
+
+    nodes = [{"id": node, "group": 0 if assign.graph.nodes[node]["bipartite"] == 0 else 1}
+             for node in assign.graph.nodes]
+    edges = [{"source": u, "target": v, "weight": d["weight"]}
+             for u, v, d in assign.graph.edges(data=True)]
+
+    return jsonify({"nodes": nodes, "edges": edges})
 
 if __name__ == "__main__":
 	app.run(debug=True)
