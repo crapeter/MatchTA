@@ -131,8 +131,13 @@ class Assign:
 		ta_assignment_count = {}
 		reserved_tas = set()
 
+		courses = sorted(
+			[c for c in self.graph.nodes() if str(c)[0].isdigit()],
+			key=lambda x: (int(x.split('-')[0]), int(x.split('-')[1]))
+		)
+
 		# Iterate through the courses in the graph
-		for course in self.graph.nodes():
+		for course in courses:
 			# Skip non-course nodes (e.g., "Masters Thesis", "Individual Study", etc.)
 			if course not in self.graph or not str(course)[0].isdigit() or int(str(course).split('-')[0]) >= 6000 or int(str(course).split('-')[0]) == 4000:
 				continue

@@ -8,6 +8,22 @@ import "../CSS/Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
+  const files = [
+    "/templates/file1.xlsx",
+    "/templates/file2.xlsx",
+    "/templates/file3.xlsx",
+  ];
+
+  const downloadFiles = () => {
+    files.forEach((file) => {
+      const link = document.createElement("a");
+      link.href = file;
+      link.download = file.split("/").pop(); // Extract filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
 
   return (
     <div className="home">
@@ -48,7 +64,7 @@ export default function Home() {
                   alt="Download Icon"
                   className="download-image"
                 />
-                <Button onClick={() => {}} className="download-template-button">
+                <Button onClick={downloadFiles} className="download-template-button">
                   Download Templates
                 </Button>
               </div>

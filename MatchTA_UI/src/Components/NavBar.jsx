@@ -15,6 +15,7 @@ const NavBar = () => {
         <button onClick={() => navigate("/Upload/2")}>2</button>
         <button onClick={() => navigate("/Upload/3")}>3</button>
         <button onClick={() => navigate("/Results")}>💻</button>
+        <button onClick={() => navigate("/FinalSchedule")}>🧾</button>
       </nav>
     </div>
   );
