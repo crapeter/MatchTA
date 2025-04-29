@@ -3,24 +3,28 @@
   padding: 2rem;
   max-width: 1000px;
   margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
 /* Page title styles */
 .results-title {
-  text-align: center;
-  color: #2c3e50;
-  margin: 1.5rem 0;
-  font-size: 2.2rem;
-  font-weight: 600;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 /* Button styles */
 .schedule-button {
   padding: 12px 24px;
   font-size: 1rem;
-  background-color: #4a6fa5;
+  background-color: #a54a4a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -36,7 +40,7 @@
 }
 
 .schedule-button:hover {
-  background-color: #3a5a8a;
+  background-color: #ae0404;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

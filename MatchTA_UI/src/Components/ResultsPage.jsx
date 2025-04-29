@@ -10,7 +10,15 @@ export default function ResultsPage() {
   return (
     <div className="results-container">
       <NavBar />
-      <h1 className="results-title">Results Page</h1>
+
+      <header className="home-header">
+          <img
+            src="/Texas_Tech_Logo.png"
+            alt="Texas Tech Logo"
+            className="texas-tech-logo"
+          />
+          <h1 className="results-title">Results</h1>
+      </header>
 
       <div className="graph-section">
         <GraphComponent />

@@ -1,43 +1,124 @@
-/* Container styles */
+/* General Reset */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 .home {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-/* Header, intro, tutorial, and other sections */
 header {
+  width: 100%;
   padding: 1rem;
-  background: #faf9f6;
-  border-bottom: 1px solid #ccc;
+  background: #ae0404;
+  border-bottom: 1px solid #000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
 
-.intro,
-.tutorial,
-.home > button {
-  margin-left: 80px; /* So content doesn’t go under nav */
+.texas-tech-logo {
+  width: 80px;
+  height: auto;
+  margin-left: 20px;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 100px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.left-side-content,
+.right-side-content {
+  width: 100%;
+  max-width: 1000px;
   padding: 2rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.intro {
+  background-color: #faf9f6;
+  border-radius: 10px;
+  border: #aaa solid 0.05rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.intro h2 {
+  text-align: center;
 }
 
 .tutorial iframe {
-  border: 2px solid #ccc;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 2px solid #ffffff;
   border-radius: 10px;
+  display: block;
 }
 
 .home-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .continue-button,
 .download-template-button {
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 0.6rem 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  margin-top: 1rem;
+}
+
+.continue-button {
+  background-color: #ae0404;
+}
+
+.download-template-button {
+  background-color: #007bff;
 }
 
 .download-template-container {
@@ -49,20 +130,62 @@ header {
 .download-image {
   width: 20px;
   height: 20px;
+  margin-top: 20px;
 }
 
-.content {
-  display: flex;
-  justify-content: space-around;
+.tutorial p {
+  text-align: center;
+  margin-top: 1rem;
 }
 
-.intro {
-  margin-top: 2rem;
-  background-color: #faf9f6;
-  border-radius: 10px;
-  border: #aaa solid 0.05rem;
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+  .texas-tech-logo {
+    width: 70px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .tutorial iframe {
+    max-width: 90%;
+    max-height: 400px;
+  }
 }
 
-.intro-text {
-  font-size: 1.1rem;
+@media screen and (max-width: 768px) {
+  .home {
+    padding: 10px;
+  }
+
+  header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+  }
+
+  .texas-tech-logo {
+    width: 60px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .left-side-content,
+  .right-side-content {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .tutorial iframe {
+    max-width: 100%;
+    height: auto;
+  }
 }

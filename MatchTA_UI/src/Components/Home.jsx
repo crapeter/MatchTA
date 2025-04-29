@@ -28,8 +28,13 @@ export default function Home() {
   return (
     <div className="home">
       <NavBar />
-      <header>
-        <h1>MatchTA</h1>
+      <header className="home-header">
+        <img
+          src="/Texas_Tech_Logo.png"
+          alt="Texas Tech Logo"
+          className="texas-tech-logo"
+        />
+        <h1 className="title">MatchTa</h1>
       </header>
 
       <div className="content">
@@ -51,23 +56,29 @@ export default function Home() {
             </p>
 
             <div className="home-buttons">
-              <Button
-                onClick={() => navigate("/Upload/1")}
-                className="continue-button"
-              >
-                Click to Continue
-              </Button>
-
               <div className="download-template-container">
                 <img
                   src="/download.png"
                   alt="Download Icon"
                   className="download-image"
+                  onClick={downloadFiles}
                 />
-                <Button onClick={downloadFiles} className="download-template-button">
+                <Button
+                  onClick={downloadFiles}
+                  className="download-template-button"
+                  variant="primary"
+                >
                   Download Templates
                 </Button>
               </div>
+
+              <Button
+                onClick={() => navigate("/Upload/1")}
+                className="continue-button"
+                variant="danger"
+              >
+                Click to Continue
+              </Button>
             </div>
           </section>
         </div>
@@ -75,8 +86,8 @@ export default function Home() {
         <div className="right-side-content">
           <section className="tutorial">
             <iframe
-              width="800"
-              height="475"
+              width="1000"
+              height="500"
               src="https://www.youtube.com/embed/j9E6WPc8W4U"
               title="MatchTA Tutorial"
               allowFullScreen

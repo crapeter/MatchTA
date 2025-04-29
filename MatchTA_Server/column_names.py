@@ -1,6 +1,6 @@
 #-First File-------------------------------------------------------------------------
 f1 = {
-  'Unnamed: 0': 0,
+  'Grad Level': 0,
   'Headcount': 1,
   'FTE count': 2,
   'Applicant Name (first name last name) ': 3,
@@ -8,6 +8,7 @@ f1 = {
   'Do you have TA Experience in CS department at TTU? If yes, when?': 5,
   'List the courses that you want to be a TA in the order from highest preference to lowest. For each course you listed, you must have taken it before and include your grade. Example of format: 5383(A), 6345(B). ''before and include your grade. Example of format: 5383(A), 6345(B). ': 6
 }
+f1_grad_level = 'Grad Level'
 f1_headcount = 'Headcount'
 f1_FTE = 'FTE count'
 f1_grader_name = 'Applicant Name (first name last name) '

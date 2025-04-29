@@ -27,7 +27,11 @@ const ExcelPreviewer = ({ id }) => {
   return (
     <div
       className="example-container"
-      style={{ padding: "1rem", overflowX: "auto" }}
+      style={{
+        padding: "1rem",
+        overflowX: "auto",
+        maxWidth: "1000px",
+      }}
     >
       <table border="1" cellPadding="8" style={{ marginTop: "1rem" }}>
         <tbody>

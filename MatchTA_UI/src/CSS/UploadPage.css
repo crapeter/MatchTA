@@ -1,0 +1,64 @@
+.upload-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 1rem;
+}
+
+.upload-header {
+  width: 100%;
+  background-color: #ae0404;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 1rem;
+  height: 80px;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
+}
+
+.upload-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.upload-content {
+  text-align: center;
+}
+.preview-table {
+  overflow-x: auto;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  max-height: 300px;
+}
+.preview-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.preview-table td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-size: 14px;
+}
+.progress-bar-wrapper {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-bar-inner {
+  height: 20px;
+  background-color: #007bff;
+  transition: width 0.5s ease;
+}

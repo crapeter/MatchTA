@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import NavBar from "./NavBar";
 import PreviewFile from "./PreviewFiles";
 import * as XLSX from "xlsx";
+
+import "../CSS/UploadPage.css";
 
 export default function UploadPage() {
   const { id } = useParams();
@@ -102,82 +105,73 @@ export default function UploadPage() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
+    <div>
       <NavBar />
-      <h2>Upload Sheet {sheetNumber}</h2>
 
-      <PreviewFile id={sheetNumber} />
+      <header className="upload-header">
+        <img
+          src="../Texas_Tech_Logo.png"
+          alt="Texas Tech Logo"
+          style={{ width: "80px", height: "auto", marginLeft: "20px" }}
+        />
+        <h2 className="upload-title">Upload Sheet {sheetNumber}</h2>
+      </header>
 
-      {step === "upload" && (
-        <>
-          <p style={{ marginBottom: "1rem" }}>{explanations[sheetNumber]}</p>
-          <input type="file" accept=".xlsx" onChange={handleUpload} />
-        </>
-      )}
+      <div className="upload-container">
+        <div className="upload-content">
+          <PreviewFile id={sheetNumber} />
 
-      {step === "preview" && (
-        <>
-          <p>
-            <strong>{fileName}</strong> uploaded. Preview below:
-          </p>
-          <div
-            style={{
-              overflowX: "auto",
-              marginTop: "1rem",
-              border: "1px solid #ccc",
-              maxHeight: "300px",
-            }}
-          >
-            <table style={{ borderCollapse: "collapse", width: "100%" }}>
-              <tbody>
-                {previewData.map((row, rIdx) => (
-                  <tr key={rIdx}>
-                    {row.map((cell, cIdx) => (
-                      <td
-                        key={cIdx}
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "4px",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {cell}
-                      </td>
+          {step === "upload" && (
+            <>
+              <p style={{ marginBottom: "1rem" }}>
+                {explanations[sheetNumber]}
+              </p>
+              <input type="file" accept=".xlsx" onChange={handleUpload} />
+            </>
+          )}
+
+          {step === "preview" && (
+            <>
+              <p>
+                <strong>{fileName}</strong> uploaded. Preview below:
+              </p>
+              <div className="preview-table">
+                <table>
+                  <tbody>
+                    {previewData.map((row, rIdx) => (
+                      <tr key={rIdx}>
+                        {row.map((cell, cIdx) => (
+                          <td key={cIdx}>{cell}</td>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <button style={{ marginTop: "1.5rem" }} onClick={handleContinue}>
-            {sheetNumber === 3 ? "Generate Assignments" : "Continue"}
-          </button>
-        </>
-      )}
+                  </tbody>
+                </table>
+              </div>
+              <Button
+                style={{ marginTop: "1.5rem" }}
+                onClick={handleContinue}
+                variant="success"
+              >
+                {sheetNumber === 3 ? "Generate Assignments" : "Continue"}
+              </Button>
+            </>
+          )}
 
-      {step === "loading" && (
-        <>
-          <p>Generating results... Please wait.</p>
-          <div
-            style={{
-              width: "100%",
-              backgroundColor: "#f3f3f3",
-              borderRadius: "5px",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                width: `${progress}%`,
-                height: "20px",
-                backgroundColor: "#007bff",
-                transition: "width 0.5s ease",
-              }}
-            ></div>
-          </div>
-          <p>{progress}%</p>
-        </>
-      )}
+          {step === "loading" && (
+            <>
+              <p>Generating results... Please wait.</p>
+              <div className="progress-bar-wrapper">
+                <div
+                  className="progress-bar-inner"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+              <p>{progress}%</p>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
