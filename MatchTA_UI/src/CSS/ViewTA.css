@@ -1,0 +1,12 @@
+.table {
+  border-radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body,
+  .ViewTA,
+  .table {
+    background-color: #1e1e1e;
+    color: white;
+  }
+}

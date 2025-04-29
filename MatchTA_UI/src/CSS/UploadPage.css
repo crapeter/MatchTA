@@ -2,6 +2,7 @@
   max-width: 1000px;
   margin: auto;
   padding: 0 1rem;
+  min-height: 100vh;
 }
 
 .upload-header {
@@ -26,16 +27,15 @@
   font-size: 2rem;
   font-weight: bold;
   color: white;
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
 }
 
 .upload-content {
   text-align: center;
+  padding: 1.5rem;
 }
+
 .preview-table {
   overflow-x: auto;
   margin-top: 1rem;
@@ -61,4 +61,16 @@
   height: 20px;
   background-color: #007bff;
   transition: width 0.5s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .upload-content {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+  }
 }

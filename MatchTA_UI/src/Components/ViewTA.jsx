@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 
+import "../CSS/ViewTA.css";
+
 const ViewTA = () => {
   const [finalRows, setFinalRows] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -94,7 +96,7 @@ const ViewTA = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="ViewTA" style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
       <h2 style={{ marginBottom: "20px" }}>TA Assignment Results</h2>
 
       <div style={{ marginBottom: "20px" }}>
@@ -134,9 +136,10 @@ const ViewTA = () => {
               borderCollapse: "collapse",
               marginBottom: "1.5rem",
             }}
+            className="table"
           >
-            <thead>
-              <tr style={{ backgroundColor: "#f0f0f0" }}>
+            <thead className="table-header">
+              <tr style={{ backgroundColor: "#f0f0f0" }} className="table-row">
                 <th style={{ padding: "10px", border: "1px solid #ccc" }}>
                   Course
                 </th>
@@ -148,9 +151,9 @@ const ViewTA = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="table-body">
               {filteredResults.map((row, index) => (
-                <tr key={index}>
+                <tr key={index} className="table-row">
                   <td style={{ padding: "10px", border: "1px solid #ccc" }}>
                     {row.course}-{row.section}
                   </td>

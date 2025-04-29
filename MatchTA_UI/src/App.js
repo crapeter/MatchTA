@@ -6,6 +6,8 @@ import UploadPage from "./Components/UploadPage"; // Ensure this file exists
 import FinalResults from "./Components/FinalResults"; // Corrected file name
 import { AuthProvider } from "./Components/AuthContext"; // Corrected import
 
+import "./App.css";
+
 function App() {
   return (
     <AuthProvider>

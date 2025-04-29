@@ -40,8 +40,6 @@
   z-index: 10;
 }
 
-/* Rest of your existing styles... */
-
 /* Graph title styles */
 .graph-title {
   text-align: center;
@@ -110,5 +108,23 @@
 
   .graph-title {
     font-size: 20px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body,
+  /* .graph-container, */
+  .view_top_tas_per_course {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .graph-title {
+    color: #ffffff;
+  }
+
+  .graph-container {
+    background-color: #575757;
+    border: #1e1e1e solid 0.05rem;
   }
 }

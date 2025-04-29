@@ -2,9 +2,14 @@
 .results-container {
   padding: 2rem;
   max-width: 1000px;
+  min-height: 100vh;
   margin: 0 auto;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
+}
+
+.home-header {
+  margin-bottom: 2rem;
 }
 
 /* Page title styles */
@@ -79,5 +84,19 @@
 @media (max-width: 480px) {
   .results-title {
     font-size: 1.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body,
+  .results-container {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .graph-section {
+    background-color: #1e1e1e;
+    border: #444 solid 0.05rem;
+    color: white;
   }
 }

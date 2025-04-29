@@ -36,7 +36,7 @@ const GraphComponent = () => {
   }
 
   return (
-    <div>
+    <div className="graph-component">
       <h2 className="graph-title">TA-Course Assignments Graph</h2>
       <div className="content-container">
         <div className="view_top_tas_per_course">

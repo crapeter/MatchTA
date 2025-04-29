@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import GraphComponent from "./GraphComponent";
 import NavBar from "./NavBar";
+
 import "../CSS/ResultsPage.css";
 
 export default function ResultsPage() {
@@ -11,14 +12,16 @@ export default function ResultsPage() {
     <div className="results-container">
       <NavBar />
 
-      <header className="home-header">
+      <div style={{ marginBottom: "5rem" }}>
+        <header className="home-header">
           <img
             src="/Texas_Tech_Logo.png"
             alt="Texas Tech Logo"
             className="texas-tech-logo"
           />
           <h1 className="results-title">Results</h1>
-      </header>
+        </header>
+      </div>
 
       <div className="graph-section">
         <GraphComponent />

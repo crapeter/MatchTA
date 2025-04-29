@@ -3,6 +3,8 @@ import { Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import NavBar from "./NavBar";
 
+import "../CSS/FinalResults.css";
+
 export default function FinalSchedule() {
   const [finalRows, setFinalRows] = useState([]);
   const [excelBlob, setExcelBlob] = useState(null);
@@ -43,7 +45,7 @@ export default function FinalSchedule() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
+    <div className="container" style={{ padding: "2rem", maxWidth: "1000px", margin: "auto" }}>
       <NavBar />
       <div style={{ marginBottom: "5rem" }}>
         <header className="home-header">
@@ -56,16 +58,17 @@ export default function FinalSchedule() {
         </header>
       </div>
 
-      <div>
+      <div className="table">
         <table
           style={{
             width: "100%",
             borderCollapse: "collapse",
             marginBottom: "1.5rem",
           }}
+          className="table"
         >
-          <thead>
-            <tr style={{ backgroundColor: "#f0f0f0" }}>
+          <thead className="table-header">
+            <tr style={{ backgroundColor: "#f0f0f0" }} className="table-row">
               <th style={{ padding: "10px", border: "1px solid #ccc" }}>
                 Course
               </th>
@@ -77,9 +80,9 @@ export default function FinalSchedule() {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table-body">
             {finalRows.map((row, index) => (
-              <tr key={index}>
+              <tr key={index} className="table-row">
                 <td style={{ padding: "10px", border: "1px solid #ccc" }}>
                   {row["Course Number"]}-{row["Section Number"]}
                 </td>

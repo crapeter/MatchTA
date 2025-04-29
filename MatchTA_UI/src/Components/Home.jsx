@@ -90,6 +90,7 @@ export default function Home() {
               height="500"
               src="https://www.youtube.com/embed/j9E6WPc8W4U"
               title="MatchTA Tutorial"
+              className="tutorial-video"
               allowFullScreen
             ></iframe>
             <p>Watch the tutorial to understand how to use the app!</p>

@@ -1,3 +1,6 @@
-body {
-  background-color: #181c24; /* Dark, rich background */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #ffffff;
+  }
 }

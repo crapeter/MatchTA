@@ -1,0 +1,15 @@
+@media (prefers-color-scheme: dark) {
+  body,
+  .container,
+  .table {
+    background-color: #121212;
+    color: #ffffff;
+    border-color: #444;
+  }
+
+  .table-body tr td,
+  .table-header tr th {
+    background-color: #1e1e1e;
+    color: #ffffff;
+  }
+}
