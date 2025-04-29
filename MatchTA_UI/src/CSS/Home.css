@@ -53,7 +53,7 @@ header {
 .content {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   margin-top: 100px;
   width: 100%;
@@ -75,7 +75,6 @@ header {
   background-color: #faf9f6;
   border-radius: 10px;
   border: #aaa solid 0.05rem;
-  margin-top: 2rem;
   padding: 1rem;
   overflow-y: auto;
   flex-grow: 1;
